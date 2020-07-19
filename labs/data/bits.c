@@ -1,6 +1,7 @@
 /* 
  * CS:APP Data Lab 
- * 
+ * NAME:Msk
+ * ID:N1p
  * <Please put your name and userid here>
  * 
  * bits.c - Source file with your solutions to the Lab.
@@ -149,8 +150,9 @@ int bitAnd(int x, int y) {
  *   Rating: 2
  */
 int getByte(int x, int n) {
-  int mask=0xff;
-  return (x>>(n<<3))&mask;
+  int mask = 0xFF;
+  int shift = (n<<3);
+  return (mask&(((x&(mask<<shift))>>shift)));
 }
 /* 
  * logicalShift - shift x to the right by n, using a logical shift
@@ -160,15 +162,20 @@ int getByte(int x, int n) {
  *   Max ops: 20
  *   Rating: 3 
  */
-int logicalShift(int x, int n) {
-  int mask=((0x1<<(32+~n))+~0)|(0x1<<(32+~n));
-  return (x>>n)&mask;
+// int logicalShift(int x, int n) {
+//   int mask=((0x1<<(32+~n))+~0)|(0x1<<(32+~n));
+//   return (x>>n)&mask;
+int logicalShift(int x, int n){     // NOT SOLVED
+  int mask = (0x1 << 0x1f);
+  int n2 = (32+n) + (~0);
+  return (x>>n)&(~(mask>>n2));
+}
 /*  int c=((0x1<<31>>31)^0x1)<<31;
   return ((x>>n)^(c>>n)); it's wrong for 0x0>>0x1==0x0
 */
 /*Bug: return ~((~x)>>n); it's wrong for ~x is postive while x is negative
 */ 
-}
+
 /*
  * bitCount - returns count of number of 1's in word
  *   Examples: bitCount(5) = 2, bitCount(7) = 3
@@ -199,13 +206,17 @@ int bitCount(int x) {
  *   Max ops: 12
  *   Rating: 4 
  */
+// int bang(int x) {
+//   x=(x>>16)|x;
+//   x=(x>>8)|x;
+//   x=(x>>4)|x;
+//   x=(x>>2)|x;
+//   x=(x>>1)|x;
+//   return ~x&0x1;
+// }
 int bang(int x) {
-  x=(x>>16)|x;
-  x=(x>>8)|x;
-  x=(x>>4)|x;
-  x=(x>>2)|x;
-  x=(x>>1)|x;
-  return ~x&0x1;
+  int zero = 0;
+  return (zero ^ x);
 }
 /* 
  * tmin - return minimum two's complement integer 
